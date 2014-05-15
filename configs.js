@@ -53,8 +53,7 @@ exports.logformat = ":remote-addr|:date|:method|:url|:status|:res[content-length
 // the database information
 // by default, express-scaffold using moogoose as mongodb driver
 exports.database = {
-    name: pkg.name,
-    tables: []
+    name: pkg.name
 }
 
 // the session infomation

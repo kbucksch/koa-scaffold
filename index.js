@@ -28,11 +28,6 @@ function Scaffold(configs) {
 
     this.app.db = monk(this.settings.database.name);
 
-    this.app.db.table = {};
-    for(var table in this.settings.database.tables) {
-        this.app.db.table[table] = wrap(this.app.db.get(table));
-    }
-
     // find `views` and `public` abs path
     this.dirs.views = finder(configs, 'views');
     this.dirs.uploads = finder(configs, 'uploads');
