@@ -24,7 +24,18 @@ exports['view engine'] = 'jade';
 // the views folder dir,
 // must be abs dir,
 // by default, its where parent module locates
-exports.views = path.join(parent, './views');
+exports.views = path.join(parent, './app/views');
+
+exports.view_options = {
+    default: 'jade',
+    cache: true,
+    map: {
+        html: "underscore"
+    },
+    locals: {
+        pretty: true
+    }
+};
 
 // the public folder dir,
 // must be abs dir,
@@ -42,14 +53,15 @@ exports.logformat = ":remote-addr|:date|:method|:url|:status|:res[content-length
 // the database information
 // by default, express-scaffold using moogoose as mongodb driver
 exports.database = {
-  name: pkg.name
+    name: pkg.name,
+    tables: []
 }
 
 // the session infomation
 // by default, express-scaffold using connect-mongo to presist sessions.
 exports.session = {
-  secret: pkg.name,
-  // enable `session.store` to presist sessions,
-  // by default, express-scaffold would not store sessions into databases.
-  store: false
+    secret: pkg.name,
+    // enable `session.store` to presist sessions,
+    // by default, express-scaffold would not store sessions into databases.
+    store: false
 }
