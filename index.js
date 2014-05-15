@@ -1,8 +1,5 @@
 var koa = require('koa');
 var _ = require('underscore');
-var depender = require('depender');
-var bodyParser = require('koa-bodyparser');
-var methodOverride = require('koa-methodoverride');
 var views = require('koa-views');
 var router = require('koa-router');
 var logger = require('koa-logger');
@@ -28,16 +25,14 @@ function KoaScaffold(configs) {
 
     this.settings = _.extend(_.clone(defaults), configs || {});
 
-    console.log(this.settings);
-
     this.dirs = {};
     this.app = koa();
 
-    this.db = monk(this.settings.database.name);
+    this.app.db = monk(this.settings.database.name);
 
-    this.db.table = {};
+    this.app.db.table = {};
     for(var table in this.settings.database.tables) {
-        this.db.table[table] = wrap(this.db.get(table));
+        this.app.db.table[table] = wrap(this.app.db.get(table));
     }
 
     // find `views` and `public` abs path
@@ -49,11 +44,15 @@ function KoaScaffold(configs) {
     this.app.keys = ['feedr session'];
     this.app.use(session());
     this.app.use(views(this.settings.views, this.settings.view_options));
+    this.app.use(logger());
     this.app.use(router(this.app));
     this.app.use(serve(this.settings.publics));
 
     this.app.use(less(this.settings.publics));
     this.app.use(errors());
+
+    this.app.use(logger());
+    //this.app.use(logger(devMode ? 'dev' : settings.logformat));
 
 //    if (!this.settings.session.secret) {
 //        this.settings.session.secret = this.settings.database.name;
