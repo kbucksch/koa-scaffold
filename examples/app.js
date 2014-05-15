@@ -12,7 +12,8 @@ new Server({
         name: 'example',
         tables: ["test"]
     },
-    views: "./examples/app/views"
+    views: "./examples/app/views",
+    env: "production"
 })
     .routes(function (app) {
         app.get('', function * (next) {

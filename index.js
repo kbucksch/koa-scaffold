@@ -25,6 +25,9 @@ function KoaScaffold(configs) {
 
     this.settings = _.extend(_.clone(defaults), configs || {});
 
+    var devMode = true;
+    if (this.settings.env === 'production') devMode = false;
+
     this.dirs = {};
     this.app = koa();
 
@@ -44,14 +47,13 @@ function KoaScaffold(configs) {
     this.app.keys = ['feedr session'];
     this.app.use(session());
     this.app.use(views(this.settings.views, this.settings.view_options));
-    this.app.use(logger());
+    this.app.use(logger(devMode ? 'dev' : this.settings.logformat));
     this.app.use(router(this.app));
     this.app.use(serve(this.settings.publics));
 
     this.app.use(less(this.settings.publics));
     this.app.use(errors());
 
-    this.app.use(logger());
     //this.app.use(logger(devMode ? 'dev' : settings.logformat));
 
 //    if (!this.settings.session.secret) {
