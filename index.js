@@ -11,17 +11,12 @@ var less = require('koa-less');
 var monk = require('monk');
 var wrap = require('co-monk');
 
-
 var finder = require('./libs/finder.js');
 var pkg = require('./package');
 var defaults = require('./configs');
 
 
-var scaffold = KoaScaffold.prototype;
-
-exports = module.exports = KoaScaffold;
-
-function KoaScaffold(configs) {
+function Scaffold(configs) {
 
     this.settings = _.extend(_.clone(defaults), configs || {});
 
@@ -76,25 +71,22 @@ function KoaScaffold(configs) {
 
     //this.deps = new depender;
 
+    var self = this;
+
+    this.run = function(port) {
+        var app = self.app;
+        var selectedPort = port && _.isNumber(port);
+        if (selectedPort) self.port = port;
+        console.log(app.locals.site.name + ' is running on port ' + self.port);
+        return app.listen(self.port);
+    };
+
+    self.routes = function(cb) {
+        cb(self.app);
+        return self;
+    }
+
     return this;
 }
 
-scaffold.run = function(port) {
-    var app = this.app;
-    var selectedPort = port && _.isNumber(port);
-    if (selectedPort) this.port = port;
-    console.log(app.locals.site.name + ' is running on port ' + this.port);
-    return app.listen(this.port);
-}
-
-scaffold.routes = function(cb) {
-    cb(this.app);
-    return this;
-}
-
-    // taken fromm old stuff
-//scaffold.routes = function(cb) {
-//    this.deps.define('app', this.app);
-//    this.deps.use(routes);
-//    return this;
-//}
+module.exports = Scaffold;

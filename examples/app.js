@@ -6,7 +6,7 @@ var example = require('./app/controller/example_ctrl.js');
 // as you can see, express-scaffold injects models and ctrlers into
 // app instance, it is a convenience way to organize all resource and modules
 // which almost every route needs.
-new Server({
+Server({
     name: 'My very first App',
     database: {
         name: 'example',
