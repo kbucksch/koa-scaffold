@@ -9,14 +9,13 @@ var errors = require('koa-error');
 var locals = require('koa-locals');
 var less = require('koa-less');
 var monk = require('monk');
-var wrap = require('co-monk');
 
-var finder = require('./libs/finder.js');
+var finder = require('./libs/finder');
 var pkg = require('./package');
 var defaults = require('./configs');
 
 
-function Scaffold(configs) {
+module.exports = function Scaffold(configs) {
 
     this.settings = _.extend(_.clone(defaults), configs || {});
 
@@ -44,17 +43,6 @@ function Scaffold(configs) {
     this.app.use(less(this.settings.publics));
     this.app.use(errors());
 
-    //this.app.use(logger(devMode ? 'dev' : settings.logformat));
-
-//    if (!this.settings.session.secret) {
-//        this.settings.session.secret = this.settings.database.name;
-//    }
-//
-//    // setup koa settings
-//    this.app.env = this.settings.env;
-//    this.app.name = this.settings.name || pkg.name;
-//    this.app.keys = [this.settings.session.secret];
-
     // setup server settings
     this.port = _.isNumber(this.settings.port) ? this.settings.port : defaults.port;
 
@@ -63,8 +51,6 @@ function Scaffold(configs) {
         sys: pkg,
         site: this.settings
     });
-
-    //this.deps = new depender;
 
     var self = this;
 
@@ -79,9 +65,7 @@ function Scaffold(configs) {
     self.routes = function(cb) {
         cb(self.app);
         return self;
-    }
+    };
 
     return this;
-}
-
-module.exports = Scaffold;
+};

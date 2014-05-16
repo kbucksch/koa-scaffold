@@ -1,12 +1,12 @@
 // require Server class
-var Server = require('../index');
-var example = require('./app/controller/example_ctrl.js');
+var server = require('./../index');
+var example = require('./app/controller/example_ctrl');
 
 // create app instance and chain all stuff together,
 // as you can see, express-scaffold injects models and ctrlers into
 // app instance, it is a convenience way to organize all resource and modules
 // which almost every route needs.
-Server({
+server({
     name: 'My very first App',
     database: {
         name: 'example',
