@@ -28,6 +28,7 @@
         "koa": "0.5.x",
         "koa-views": "*",
         "koa-router": "*",
+        "koa-resource-router": "0.3.3",
         "koa-logger": "*",
         "koa-static": "*",
         "koa-error": "*",

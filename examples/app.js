@@ -1,6 +1,7 @@
 // require Server class
 var server = require('./../index');
 var example = require('./app/controller/example_ctrl');
+var test = require('./app/controller/test_ctrl');
 
 // create app instance and chain all stuff together,
 // as you can see, express-scaffold injects models and ctrlers into
@@ -14,9 +15,6 @@ server({
     },
     views: "./examples/app/views"
 })
-    .routes(function (app) {
-        app.get('', function * (next) {
-            yield new example().start(this);
-        });
-    })
+    .resource(test)
+    .route('', example)
     .run();

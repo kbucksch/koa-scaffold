@@ -1,11 +1,21 @@
+/**
+ * Example of a controller where property names will be mapped.
+ *
+ * @returns {{start: *, show: *, :name: *}}
+ */
+module.exports = function() {
 
+    return {
+        start: function *() {
+            yield this.render('test.html');
+        },
 
-function ExampleController() {
+        show: function *() {
+            this.body = "hello you";
+        },
 
+        ":name": function*(name) {
+            this.body = "hello " + name;
+        }
+    }
 };
-module.exports = ExampleController;
-var controller = ExampleController.prototype;
-
-controller.start = function *(app) {
-    yield app.render('test.html');
-}
