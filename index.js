@@ -2,7 +2,6 @@ var koa = require('koa');
 var _ = require('underscore');
 var views = require('koa-views');
 var router = require('koa-router');
-var route = require('koa-route');
 var logger = require('koa-logger');
 var serve = require('koa-static');
 var session = require('koa-session');
@@ -12,7 +11,6 @@ var Resource = require('koa-resource-router');
 var less = require('koa-less');
 var monk = require('monk');
 var path = require('path');
-var parent = path.resolve(__dirname, '../../');
 
 var finder = require('./libs/finder');
 var pkg = require('./package');
@@ -74,10 +72,30 @@ Inner.prototype.resource = function(resource) {
 }
 
 Inner.prototype.route = function(url, controller) {
+
     var con = controller(this.app);
-    for(var key in con) {
-        this.app.use(route.get(url + '/' + key, con[key]));
+
+    // adding all post commands
+    if(con.post) {
+        for(var key in con.post) {
+            app.post(url + '/' + key, con.post[key]);
+        }
     }
+
+    // adding all get
+    if(con.get) {
+        for(var key in con.get) {
+            app.get(url + '/' + key, con.get[key]);
+        }
+    }
+
+    // add to all
+    for(var key in con) {
+        if(key !== 'get' && key !== 'post') {
+            app.all(url + '/' + key, con[key]);
+        }
+    }
+
     return this;
 };
 
