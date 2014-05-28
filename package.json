@@ -27,6 +27,7 @@
         "underscore": "*",
         "koa": "0.5.x",
         "koa-views": "*",
+        "koa-route": "*",
         "koa-router": "*",
         "koa-resource-router": "0.3.3",
         "koa-logger": "*",
@@ -35,6 +36,7 @@
         "koa-session": "*",
         "koa-locals": "*",
         "koa-less": "*",
-        "monk": "0.9.0"
+        "monk": "0.9.0",
+        "co-body": "0.0.1"
     }
 }

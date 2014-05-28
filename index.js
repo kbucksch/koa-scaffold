@@ -2,6 +2,7 @@ var koa = require('koa');
 var _ = require('underscore');
 var views = require('koa-views');
 var router = require('koa-router');
+var route = require('koa-route');
 var logger = require('koa-logger');
 var serve = require('koa-static');
 var session = require('koa-session');
@@ -78,21 +79,21 @@ Inner.prototype.route = function(url, controller) {
     // adding all post commands
     if(con.post) {
         for(var key in con.post) {
-            app.post(url + '/' + key, con.post[key]);
+            app.use(route.post(url + '/' + key, con.post[key]));
         }
     }
 
     // adding all get
     if(con.get) {
         for(var key in con.get) {
-            app.get(url + '/' + key, con.get[key]);
+            app.use(route.get(url + '/' + key, con.get[key]));
         }
     }
 
     // add to all
     for(var key in con) {
         if(key !== 'get' && key !== 'post') {
-            app.all(url + '/' + key, con[key]);
+            app.use(route.all(url + '/' + key, con[key]));
         }
     }
 
