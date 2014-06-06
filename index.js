@@ -45,7 +45,31 @@ function Scaffold(configs) {
     app.use(router(app));
     app.use(serve(settings.publics));
     app.use(less(settings.publics));
-    app.use(errors());
+
+    //app.use(errors());
+
+    app.use(function *(next) {
+        try {
+            yield next;
+        } catch (err) {
+            this.status = err.status;
+        }
+
+        if(this.status === 200) {
+            return;
+        }
+
+        if(!this.status) {
+            this.status = 404;
+        }
+
+        if(this.status === 404) {
+            yield this.render(settings.error['404']);
+        }
+        if(this.status === 500) {
+            yield this.render(settings.error['500']);
+        }
+    });
 
     // setup server settings
     var port = _.isNumber(settings.port) ? settings.port : defaults.port;
