@@ -74,26 +74,24 @@ Inner.prototype.resource = function(resource) {
 
 Inner.prototype.route = function(url, controller) {
 
-    var con = controller(this.app);
-
     // adding all post commands
-    if(con.post) {
-        for(var key in con.post) {
-            app.use(route.post(url + '/' + key, con.post[key]));
+    if(controller.post) {
+        for(var key in controller.post) {
+            app.use(route.post(url + '/' + key, controller.post[key]));
         }
     }
 
     // adding all get
-    if(con.get) {
-        for(var key in con.get) {
-            app.use(route.get(url + '/' + key, con.get[key]));
+    if(controller.get) {
+        for(var key in controller.get) {
+            app.use(route.get(url + '/' + key, controller.get[key]));
         }
     }
 
     // add to all
-    for(var key in con) {
+    for(var key in controller) {
         if(key !== 'get' && key !== 'post') {
-            app.use(route.all(url + '/' + key, con[key]));
+            app.use(route.all(url + '/' + key, controller[key]));
         }
     }
 
