@@ -63,4 +63,9 @@ exports.session = {
     // enable `session.store` to presist sessions,
     // by default, express-scaffold would not store sessions into databases.
     store: false
+};
+
+exports.error = {
+    "404": "404.html",
+    "500": "500.html"
 }
