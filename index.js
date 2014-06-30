@@ -52,7 +52,13 @@ function Scaffold(configs) {
         try {
             yield next;
         } catch (err) {
-            this.status = err.status;
+            console.log(err);
+            if(!err.status) {
+                yield this.render(settings.error['500']);
+            }
+            else {
+                this.status = err.status;
+            }
         }
 
         if(this.status === 200) {
