@@ -54,6 +54,7 @@ function Scaffold(configs) {
         } catch (err) {
             console.log(err);
             if(!err.status) {
+                this.status = 500;
                 yield this.render(settings.error['500']);
             }
             else {
