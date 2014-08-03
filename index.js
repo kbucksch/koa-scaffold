@@ -12,6 +12,8 @@ var Resource = require('koa-resource-router');
 var less = require('koa-less');
 var monk = require('monk');
 var path = require('path');
+var locale = require('koa-locale');
+var i18n = require('koa-i18n');
 
 var finder = require('./libs/finder');
 var pkg = require('./package');
@@ -45,6 +47,16 @@ function Scaffold(configs) {
     app.use(router(app));
     app.use(serve(settings.publics));
     app.use(less(settings.publics));
+
+    locale(app);
+
+    // expose locals to template engine
+    locals(app, {
+        sys: pkg,
+        site: settings
+    });
+
+    app.use(i18n(app, settings.i18n));
 
     //app.use(errors());
 
@@ -80,12 +92,6 @@ function Scaffold(configs) {
 
     // setup server settings
     var port = _.isNumber(settings.port) ? settings.port : defaults.port;
-
-    // expose locals to template engine
-    locals(app, {
-        sys: pkg,
-        site: settings
-    });
 
     this.app = app;
     this.port = port;
