@@ -37,6 +37,14 @@ exports.view_options = {
     }
 };
 
+exports.i18n = {
+    directory: './locales',
+    locales: ['en', 'de'],  // 'en' the default locale
+    query: true,            //  optional detect querystring - `/?lang=en-US`
+    cookie: true,           //  optional detect cookie      - `Accept-Language: zh-CN,zh;q=0.5`
+    header: true            //  optional detect header      - `Cookie: lang=zh-TW`
+};
+
 // the public folder dir,
 // must be abs dir,
 // by default, its where parent module locates
