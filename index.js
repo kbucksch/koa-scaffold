@@ -107,7 +107,7 @@ function Inner(app, port) {
 Inner.prototype.resource = function(resource) {
     this.app.use(resource.middleware());
     return this;
-}
+};
 
 Inner.prototype.route = function(url, controller) {
 

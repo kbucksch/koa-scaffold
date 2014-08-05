@@ -1,14 +1,14 @@
 {
     "name": "koa-scaffold",
-    "version": "0.0.1",
-    "description": "a simple sexy MVC wrapper of koa",
+    "version": "0.0.9",
+    "description": "Sexy Koa smart MVC environments",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/turingou/koa-scaffold.git"
+        "url": "https://github.com/unicorn-it/koa-scaffold.git"
     },
     "keywords": [
         "koa",
@@ -18,10 +18,10 @@
         "mvc",
         "framework"
     ],
-    "author": "turing <o.u.turing@gmail.com>",
+    "author": "Unicorn-IT <kontakt@unicorn-it.de>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/turingou/koa-scaffold/issues"
+        "url": "https://github.com/unicorn-it/koa-scaffold/issues"
     },
     "dependencies": {
         "underscore": "*",

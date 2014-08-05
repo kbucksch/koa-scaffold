@@ -76,4 +76,4 @@ exports.session = {
 exports.error = {
     "404": "404.html",
     "500": "500.html"
-}
+};

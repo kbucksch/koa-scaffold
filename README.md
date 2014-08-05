@@ -1,18 +1,24 @@
-## ![logo](http://ww3.sinaimg.cn/large/61ff0de3jw1e91jmudlz8j201o01o0sj.jpg) koa-scaffold ![npm](https://badge.fury.io/js/koa-scaffold.png)
+## koa-scaffold
 
-a simple sexy MVC scaffold of koa, also the next generation of [express-scaffold](https://github.com/turingou/express-scaffold).
+Sexy Koa in smart MVC environment
 
 ### Installation
 ````
-$ npm install koa-scaffold
+$ npm install https://github.com/unicorn-it/koa-scaffold/archive/<CURRENT_VERSION>.tar.gz
+````
+E.g.:
+````
+$ npm install https://github.com/unicorn-it/koa-scaffold/archive/0.0.9.tar.gz
 ````
 
 ### Quick start
-We recommend using koa-scaffold as a server module. by require koa-scaffold, you could build a fast and stable website in just 1min.
+
+We are using koa-scaffold in many projects by our self. It helps you to build MVC web application with powerful koa.js and known MVC patterns in seconds. 
 
 ````javascript
 // require Server class
 var Server = require('koa-scaffold');
+var your_router = require('./app/router');
 
 // create app instance and chain all stuff together,
 // as you can see, koa-scaffold injects models and ctrlers into
@@ -21,45 +27,20 @@ var Server = require('koa-scaffold');
 new Server({
   name: 'My very first App',
   database: {
-    name: 'appdb'
+    name: 'example'
   }
 })
-.models(function(db, Schema) {
-  // init models
-  // koa-scaffold using `mongoose` to abstract data-models
-  // the object returned will be injected to `ctrlers` and `routes` functions
-  var userModel = new Schema({
-    name: String,
-    created: Date,
-  });
-  return {
-    user: db.model('user', userModel)
-  }
-})
-.ctrlers(function(models, Ctrler) {
-  // init ctrlers
-  // koa-scaffold will wrap all models into baseCtrler,
-  // which provides normal CRUS shortcuts function, e.g: 
-  // var user = new Ctrler(model.user);
-  // user.create()
-  // user.findById()
-  return {
-    user: new Ctrler(models.user)
-  }
-})
-.routes(function(app, ctrlers) {
-  console.log(app.locals.site.name + ' is running');
-  // finally, we're going to make all route work,
-  // `routes` function contains all routes your app will invoke.
-  app.get('/users', function(req, res, next){
-    // using `user` ctrler we made before to find all users,
-    // and response with JSON string.
-    ctrlers.user.find({}, function(err, users) {
-      if (err) return next(err);
-      res.json(users);
-    });
-  });
-})
+// A router will be a vera readable object which leads URLs to handlers
+// they can look like:
+// {
+//   get: {
+//     "":                  my_controller.main,
+//     "list":              my_controller.list
+//   }
+// }
+// Placing router.js in app folder helps readability
+.route('', your_router)
+// start the app
 .run();
 ````
 
@@ -70,39 +51,20 @@ all config params list below:
 {
   // site name
   name : "site name",
-  // site desc
-  desc: 'demo site',
-  // set env to production
-  env: 'production',
-  // url should be provided. check it out in res.locals.url
-  url: 'http://abc.com',
-  // views dir:
-  views: './views',
-  // view engine:
-  // default by jade
-  "view engine": "jade",
-  // set a mongodb session store.
-  session: {
-    store: true
-  }
 }
 ````
 
-### API
-#### new Server(configObject)
-#### server#models(db[, Schema])
-#### server#ctrlers(models[, Ctrler])
-#### server#routes(app[,ctrlers,[,models]])
-#### server#run(port)
+### Structure
 
-### Contributing
-- Fork this repo
-- Clone your repo
-- Install dependencies
-- Checkout a feature branch
-- Feel free to add your features
-- Make sure your features are fully tested
-- Open a pull request, and enjoy <3
+```
+/app
+|-- assets
+|-- controller
+|-- helper
+|-- model
+|-- view
+`-- router.js
+```
 
 ### MIT license
 Copyright (c) 2013 turing &lt;o.u.turing@gmail.com&gt;
@@ -126,5 +88,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ---
-![docor](https://cdn1.iconfinder.com/data/icons/windows8_icons_iconpharm/26/doctor.png)
-generated using [docor](https://github.com/turingou/docor.git) @ 0.1.0. brought to you by [turingou](https://github.com/turingou)
