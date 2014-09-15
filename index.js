@@ -45,7 +45,14 @@ function Scaffold(configs) {
     app.use(views(settings.views, settings.view_options));
     app.use(logger(devMode ? 'dev' : settings.logformat));
     app.use(router(app));
-    app.use(serve(settings.publics));
+    if(Array.isArray(settings.publics)) {
+        for(var i = 0; i < settings.publics.length; i++) {
+            app.use(serve(settings.publics[i]));
+        }
+    }
+    else {
+        app.use(serve(settings.publics));
+    }
     app.use(less(settings.publics));
 
     locale(app);

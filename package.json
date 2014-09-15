@@ -1,6 +1,6 @@
 {
     "name": "koa-scaffold",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "description": "Sexy Koa smart MVC environments",
     "main": "index.js",
     "scripts": {
