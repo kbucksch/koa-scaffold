@@ -9,7 +9,6 @@ var session = require('koa-session');
 var errors = require('koa-error');
 var locals = require('koa-locals');
 var Resource = require('koa-resource-router');
-var less = require('koa-less');
 var monk = require('monk');
 var path = require('path');
 var locale = require('koa-locale');
@@ -53,7 +52,6 @@ function Scaffold(configs) {
     else {
         app.use(serve(settings.publics));
     }
-    app.use(less(settings.publics));
 
     locale(app);
 

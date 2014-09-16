@@ -35,7 +35,6 @@
         "koa-error": "*",
         "koa-session": "*",
         "koa-locals": "*",
-        "koa-less": "*",
         "monk": "0.9.0",
         "co-body": "0.0.1",
         "koa-i18n": "0.1.4",
