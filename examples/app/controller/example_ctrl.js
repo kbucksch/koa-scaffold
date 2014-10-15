@@ -5,30 +5,22 @@ var parse = require('co-body');
  *
  * @returns {{start: *, show: *, :name: *}}
  */
-module.exports = function() {
+module.exports = {
 
-    return {
+    start: function *() {
+        yield this.render('example.html');
+    },
 
-        get: {
-            start: function *() {
-                yield this.render('test.html');
-            },
+    show: function *() {
+        this.body = "hello you";
+    },
 
-            show: function *() {
-                this.body = "hello you";
-            },
+    name: function*(name) {
+        this.body = "hello " + name;
+    },
 
-            ":name": function*(name) {
-                console.log(name);
-                this.body = "hello " + name;
-            }
-        },
-
-        post: {
-            postit: function *() {
-                var form = yield parse(this);
-                this.body = "hello you: " + form.texter;
-            }
-        }
+    postit: function *() {
+        var form = yield parse(this);
+        this.body = "hello you: " + form.texter;
     }
 };

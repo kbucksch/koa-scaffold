@@ -54,6 +54,21 @@ all config params list below:
 }
 ````
 
+### Security
+
+We added basic authentication too. For now only one user and pw can be passed.
+To use this feature just call ```secure( opts )``` function.
+```javascript
+.secure(admin: {
+    type: "basic",
+        user: {
+            name: 'default',
+            pass: '0000'
+        }
+    })
+```
+This will secure ```/admin``` url with http basic with username default and password 0000.
+
 ### Structure
 
 ```

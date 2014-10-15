@@ -13,6 +13,8 @@ var monk = require('monk');
 var path = require('path');
 var locale = require('koa-locale');
 var i18n = require('koa-i18n');
+var auth = require('koa-basic-auth');
+var mount = require('koa-mount');
 
 var finder = require('./libs/finder');
 var pkg = require('./package');
@@ -70,6 +72,11 @@ function Scaffold(configs) {
             yield next;
         } catch (err) {
             console.log(err);
+            if(err.status === 401) {
+                this.status = 401;
+                this.set('WWW-Authenticate', 'Basic');
+                this.body = 'Unauthorized request';
+            }
             if(!err.status) {
                 this.status = 500;
                 yield this.render(settings.error['500']);
@@ -137,6 +144,16 @@ Inner.prototype.route = function(url, controller) {
         }
     }
 
+    return this;
+};
+
+Inner.prototype.secure = function(opts) {
+
+    // Secure urls
+    var auths = Object.keys(opts);
+    for(var j = 0; j < auths.length; j++) {
+        this.app.use(mount('/' + auths[j], auth(opts[auths[j]].user)));
+    }
     return this;
 };
 

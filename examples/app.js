@@ -1,6 +1,6 @@
 // require Server class
 var server = require('./../index');
-var example = require('./app/controller/example_ctrl');
+var router = require('./app/router');
 var test = require('./app/controller/test_ctrl');
 
 // create app instance and chain all stuff together,
@@ -15,6 +15,19 @@ server({
     },
     views: "./examples/app/views"
 })
+    // example of how to secure areas of app
+    .secure({
+        admin: {
+            type: "basic",
+            user: {
+                name: 'default',
+                pass: '000'
+            }
+        }
+    })
+    // example of CRUD controller
     .resource(test)
-    .route('', example)
+    // example of individual routing
+    .route('', router)
+    // starting the app
     .run();
