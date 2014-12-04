@@ -102,6 +102,16 @@ function Scaffold(configs) {
         }
     });
 
+    //setting language-cookie if f.e. ?lang=de is added to the url
+    app.use(function * (next) {
+
+        this.i18n.setLocaleFromQuery(this.request);
+        yield next;
+
+        var currentLocale = this.i18n.getLocale();
+        this.cookies.set('lang', currentLocale, { signed: true });
+    });
+
     // setup server settings
     var port = _.isNumber(settings.port) ? settings.port : defaults.port;
 

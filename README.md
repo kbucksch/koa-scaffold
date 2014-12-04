@@ -83,6 +83,38 @@ This will secure ```/admin``` url with http basic with username default and pass
 `-- router.js
 ```
 
+### i18n
+
+We are using i18n for internationalisation. 
+To switch to a different, configured language, just append f.e. ?lang=en to the next url you are requesting.
+If you do that, the cookie called "lang" will be added to the response and users will keep that language
+until they call an url with ?lang=[another language] again.
+
+To use a language, you need to have a .js - file in /locals that is named after the language like "en.js".
+That file contains every translation identified by a id that you can call in f.e. template-engine like swig.
+
+For Example in swig: 
+
+template:
+```html
+<h1>{{ __('this.is.a.test') }}</h1>
+```
+locales-file:
+
+en.js :
+```javascript
+    {
+	    "this.is.a.test": "Your Headline"
+    }
+```
+de.js :
+```javascript
+    {
+	    "this.is.a.test": "Deine Überschrift"
+    }
+```
+
+
 ### MIT license
 Copyright (c) 2013 turing &lt;o.u.turing@gmail.com&gt;
 
