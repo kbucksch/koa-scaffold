@@ -147,9 +147,23 @@ Inner.prototype.route = function(url, controller) {
         }
     }
 
+    // adding all get
+    if(controller.put) {
+        for(var key in controller.put) {
+            app.use(route.put(url + '/' + key, controller.put[key]));
+        }
+    }
+
+    // adding all get
+    if(controller.delete) {
+        for(var key in controller.delete) {
+            app.use(route.delete(url + '/' + key, controller.delete[key]));
+        }
+    }
+
     // add to all
     for(var key in controller) {
-        if(key !== 'get' && key !== 'post') {
+        if(key !== 'get' && key !== 'post' && key !== 'put' && key !== 'delete') {
             app.use(route.all(url + '/' + key, controller[key]));
         }
     }
