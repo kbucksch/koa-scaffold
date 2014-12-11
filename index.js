@@ -42,7 +42,7 @@ function Scaffold(configs) {
     app.db = monk(settings.database.name);
     app.keys = ['feedr session'];
 
-    app.use(session());
+    app.use(session(app));
     app.use(views(settings.views, settings.view_options));
     app.use(logger(devMode ? 'dev' : settings.logformat));
     app.use(router(app));
