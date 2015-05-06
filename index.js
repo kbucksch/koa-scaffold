@@ -5,7 +5,7 @@ var router = require('koa-router');
 var route = require('koa-route');
 var logger = require('koa-logger');
 var serve = require('koa-static');
-var session = require('koa-session');
+var session = require('koa-generic-session');
 var errors = require('koa-error');
 var locals = require('koa-locals');
 var Resource = require('koa-resource-router');
@@ -15,6 +15,9 @@ var locale = require('koa-locale');
 var i18n = require('koa-i18n');
 var auth = require('koa-basic-auth');
 var mount = require('koa-mount');
+var passport = require('koa-passport');
+var bodyParser = require('koa-bodyparser');
+var LocalStrategy = require('passport-local').Strategy;
 
 var finder = require('./libs/finder');
 var pkg = require('./package');
@@ -42,7 +45,13 @@ function Scaffold(configs) {
     app.db = monk(settings.database.name);
     app.keys = ['feedr session'];
 
+    app.use(bodyParser());
+
     app.use(session(app));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
     app.use(views(settings.views, settings.view_options));
     app.use(logger(devMode ? 'dev' : settings.logformat));
     app.use(router(app));
@@ -178,6 +187,71 @@ Inner.prototype.secure = function(opts) {
     for(var j = 0; j < auths.length; j++) {
         this.app.use(mount('/' + auths[j], auth(opts[auths[j]].user)));
     }
+    return this;
+};
+
+Inner.prototype.passport = function (loginUrl, securedArea, dbName, dbTable, cb) {
+
+    passport.use(new LocalStrategy(cb));
+
+    passport.serializeUser(function (user, done) {
+        done(null, user._id);
+    });
+
+    passport.deserializeUser(function (id, done) {
+        try {
+            var db = require('monk')(dbName);
+            var user_model = db.get(dbTable);
+
+            user_model.find({ _id: id }, function (err, foundUser) {
+                if (!foundUser) {
+                    done('user could not be found', foundUser);
+                }
+                else {
+                    done(null, foundUser);
+                }
+            });
+
+        }
+        catch (err) {
+            done(err, null);
+        }
+    });
+
+    this.app.post(securedArea, function * () {
+        if (this.isAuthenticated()) {
+            yield next
+        } else {
+            this.redirect(loginUrl)
+        }
+    });
+
+    this.app.get(securedArea, function * (next) {
+        if (this.isAuthenticated()) {
+            yield next;
+        } else {
+            this.redirect(loginUrl)
+        }
+    });
+
+    this.app.post(loginUrl, function * (next) {
+        var ctx = this;
+        yield passport.authenticate('local', function*(err, user, info) {
+            if (err) throw err;
+            if (user === false) {
+                ctx.status = 401;
+                ctx.body = { success: false }
+            } else {
+                yield ctx.login(user);
+                ctx.body = { success: true }
+            }
+        }).call(this, next)
+    });
+
+    this.app.get('/logout', function*(next) {
+        this.logout();
+        this.redirect(loginUrl);
+    });
     return this;
 };
 
