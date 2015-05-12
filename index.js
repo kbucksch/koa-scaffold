@@ -218,7 +218,7 @@ Inner.prototype.passport = function (loginUrl, securedArea, dbName, dbTable, cb)
         }
     });
 
-    this.app.post(securedArea, function * () {
+    this.app.post(securedArea, function * (next) {
         if (this.isAuthenticated()) {
             yield next
         } else {
